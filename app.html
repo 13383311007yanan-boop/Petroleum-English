@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>石油工程复试英语备考APP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 首页样式 */
+        .header {
+            text-align: center;
+            color: white;
+            padding: 40px 0;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            padding: 20px 30px;
+            text-align: center;
+            min-width: 100px;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .menu-button {
+            background: white;
+            border: none;
+            border-radius: 16px;
+            padding: 30px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .menu-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .button-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .button-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .button-desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .info {
+            background: rgba(255,255,255,0.9);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .info p {
+            margin: 5px 0;
+            color: #333;
+        }
+        
+        /* 导航样式 */
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+        
+        .nav-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        
+        .back-button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .back-button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        /* 隐藏页面 */
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* 翻译页面样式 */
+        .passage-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .passage-title {
+            margin: 0 0 15px 0;
+            color: #667eea;
+            font-size: 1.3rem;
+        }
+        
+        .passage-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .difficulty-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: white;
+        }
+        
+        .difficulty-badge.easy { background: #22c55e; }
+        .difficulty-badge.medium { background: #f59e0b; }
+        .difficulty-badge.hard { background: #ef4444; }
+        
+        .translation-input-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .translation-input {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 12px;
+            resize: vertical;
+            font-family: inherit;
+            min-height: 150px;
+        }
+        
+        .recording-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ef4444;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            animation: pulse 1.5s infinite;
+            display: none;
+        }
+        
+        .recording-indicator.active {
+            display: block;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .voice-button {
+            flex: 1;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+        
+        .voice-button:hover {
+            background: #5568d3;
+        }
+        
+        .voice-button.recording {
+            background: #ef4444;
+        }
+        
+        .submit-button {
+            flex: 2;
+            padding: 15px;
+            background: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .submit-button:hover {
+            background: #16a34a;
+        }
+        
+        .result-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+        }
+        
+        .result-title {
+            margin: 0 0 20px 0;
+            color: #333;
+            font-size: 1.5rem;
+        }
+        
+        .score-display {
+            font-size: 4rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .score-display.excellent { color: #22c55e; }
+        .score-display.good { color: #f59e0b; }
+        .score-display.poor { color: #ef4444; }
+        
+        .reference-title {
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0 10px 0;
+            font-size: 1.1rem;
+        }
+        
+        .reference-text {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .error-word {
+            background: #fee2e2;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .error-word-title {
+            font-weight: bold;
+            color: #ef4444;
+            font-size: 1.1rem;
+        }
+        
+        .error-word-expected {
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+        
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .action-button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .save-button {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .save-button:hover {
+            background: #dc2626;
+        }
+        
+        .save-button.saved {
+            background: #22c55e;
+        }
+        
+        .save-button:disabled {
+            cursor: default;
+            opacity: 0.8;
+        }
+        
+        .next-button {
+            background: #667eea;
+            color: white;
+        }
+        
+        .next-button:hover {
+            background: #5568d3;
+        }
+        
+        /* 错词库样式 */
+        .wordbook-empty {
+            text-align: center;
+            color: white;
+            padding: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+        }
+        
+        .wordbook-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .wordbook-content {
+            flex: 1;
+        }
+        
+        .wordbook-en {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .wordbook-cn {
+            font-size: 1rem;
+            color: #667eea;
+        }
+        
+        .wordbook-delete {
+            background: #fee2e2;
+            color: #ef4444;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .wordbook-delete:hover {
+            background: #fecaca;
+        }
+        
+        .wordbook-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .clear-button {
+            flex: 1;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        
+        .clear-button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .no-errors {
+            color: #22c55e;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.1rem;
+        }
+        
+        /* 选词功能样式 */
+        .selectable-passage {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            line-height: 2;
+        }
+        
+        .selectable-passage .word {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            display: inline;
+        }
+        
+        .selectable-passage .word:hover {
+            background: #e0e7ff;
+            color: #4f46e5;
+        }
+        
+        .selectable-passage .word.selected {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .selectable-passage .word.saved {
+            background: #d1fae5;
+            color: #059669;
+        }
+        
+        .word-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 90%;
+            width: 350px;
+        }
+        
+        .word-popup-en {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .word-popup-cn {
+            font-size: 1.2rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .word-popup-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .word-popup-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .word-popup-btn.add {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .word-popup-btn.add:disabled {
+            background: #9ca3af;
+            cursor: default;
+        }
+        
+        .word-popup-btn.close {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .word-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        
+        .selectable-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .selectable-hint {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 首页 -->
+        <div id="homePage" class="page active">
+            <div class="header">
+                <h1>石油工程英语备考</h1>
+                <p>专为石油工程复试英语考试设计</p>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number" id="statTranslated">0</div>
+                    <div class="stat-label">翻译练习</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statErrors">0</div>
+                    <div class="stat-label">错词本</div>
+                </div>
+            </div>
+
+            <div class="menu-container">
+                <button class="menu-button" onclick="startTranslation()">
+                    <span class="button-icon">📝</span>
+                    <span class="button-text">文段翻译</span>
+                    <span class="button-desc">练习专业翻译技巧（支持语音输入）</span>
+                </button>
+                
+                <button class="menu-button" onclick="showWordbook()">
+                    <span class="button-icon">📖</span>
+                    <span class="button-text">错词库</span>
+                    <span class="button-desc">复习翻译中的重点词汇</span>
+                </button>
+            </div>
+
+            <div class="info">
+                <p>🎯 针对石油工程复试英语定制</p>
+                <p>🎙️ 支持语音输入翻译</p>
+                <p>📖 错词自动收集，随时复习</p>
+            </div>
+        </div>
+
+        <!-- 翻译页面 -->
+        <div id="transPage" class="page">
+            <div class="nav-header">
+                <button class="back-button" onclick="goHome()">← 返回</button>
+            </div>
+            
+            <div class="passage-card">
+                <h3 class="passage-title">原文</h3>
+                <p class="passage-text" id="passageText"></p>
+                <span class="difficulty-badge" id="difficultyBadge">中等</span>
+            </div>
+            
+            <div id="translationInputSection">
+                <div class="translation-input-container">
+                    <textarea
+                        class="translation-input"
+                        id="translationInput"
+                        placeholder="请输入中文翻译..."
+                        rows="6"
+                    ></textarea>
+                    <div class="recording-indicator" id="recordingIndicator">🎙️ 录音中...</div>
+                </div>
+                
+                <div class="button-group">
+                    <button class="voice-button" id="voiceBtn" onclick="toggleVoiceInput()">
+                        <span>🎙️</span>
+                        <span id="voiceBtnText">语音输入</span>
+                    </button>
+                    <button class="submit-button" onclick="submitTranslation()">提交翻译</button>
+                </div>
+            </div>
+            
+            <div class="result-card" id="resultSection" style="display: none;">
+                <h3 class="result-title">评分结果</h3>
+                <div class="score-display" id="scoreDisplay">0分</div>
+                
+                <div id="errorsSection"></div>
+                
+                <p class="reference-title">参考译文：</p>
+                <p class="reference-text" id="referenceText"></p>
+                
+                <div class="selectable-title">
+                    📖 点击任意单词查看释义
+                    <span class="selectable-hint">（点击可添加到错词库）</span>
+                </div>
+                <div class="selectable-passage" id="selectablePassage"></div>
+                
+                <div class="button-row">
+                    <button class="action-button save-button" id="saveButton" onclick="saveErrors()">
+                        📖 保存错词到错词库
+                    </button>
+                    <button class="action-button next-button" onclick="startTranslation()">
+                        下一篇 →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 错词库页面 -->
+        <div id="wordbookPage" class="page">
+            <div class="nav-header">
+                <button class="back-button" onclick="goHome()">← 返回</button>
+                <span class="nav-title">📖 错词库</span>
+            </div>
+            
+            <div id="wordbookContent"></div>
+        </div>
+        
+        <!-- 单词释义弹窗 -->
+        <div id="wordPopupOverlay" class="word-popup-overlay" style="display: none;" onclick="closeWordPopup()"></div>
+        <div id="wordPopup" class="word-popup" style="display: none;">
+            <div class="word-popup-en" id="popupEn"></div>
+            <div class="word-popup-cn" id="popupCn"></div>
+            <div class="word-popup-buttons">
+                <button class="word-popup-btn add" id="popupAddBtn" onclick="addWordFromPopup()">添加到错词库</button>
+                <button class="word-popup-btn close" onclick="closeWordPopup()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 翻译文段数据
+        const passagesData = [
+            {
+                id: 1,
+                content: "Enhanced Oil Recovery (EOR) techniques have become increasingly important as conventional oil reserves decline. Thermal EOR methods, particularly steam injection, have proven effective in heavy oil reservoirs. The steam reduces oil viscosity and improves mobility, allowing more efficient extraction.",
+                translation: "提高石油采收率（EOR）技术随着常规石油储量的减少而变得日益重要。热力EOR方法，特别是蒸汽注入，已在稠油油藏中证明有效。蒸汽降低了原油粘度并改善了流动性，从而实现更高效的开采。",
+                keywords: ['Enhanced Oil Recovery', 'steam injection', 'viscosity'],
+                difficulty: 'medium'
+            },
+            {
+                id: 2,
+                content: "Horizontal drilling technology has revolutionized the oil and gas industry by enabling access to reservoirs that were previously uneconomical to produce. By drilling horizontally through the productive zone, operators can maximize reservoir contact and significantly increase production rates.",
+                translation: "水平钻井技术通过开发先前不具备经济开采价值的油藏，彻底改变了油气行业。通过在产层水平钻进，作业者可以最大化油藏接触面积并显著提高产量。",
+                keywords: ['horizontal drilling', 'reservoirs', 'production'],
+                difficulty: 'easy'
+            },
+            {
+                id: 3,
+                content: "Hydraulic fracturing, commonly known as fracking, involves injecting high-pressure fluid into underground rock formations to create fractures that allow oil or gas to flow more freely. This technology has been instrumental in unlocking shale gas and tight oil resources worldwide.",
+                translation: "水力压裂，通常称为压裂，涉及将高压液体注入地下岩层以产生裂缝，从而使石油或天然气能够更自由地流动。这项技术在开发全球页岩气和致密油资源方面发挥了重要作用。",
+                keywords: ['Hydraulic fracturing', 'shale gas', 'tight oil'],
+                difficulty: 'medium'
+            }
+        ];
+
+        // 专业词汇翻译对照
+        const wordTranslations = {
+            'Enhanced Oil Recovery': { en: 'Enhanced Oil Recovery', cn: '提高采收率' },
+            'steam injection': { en: 'steam injection', cn: '蒸汽注入' },
+            'viscosity': { en: 'viscosity', cn: '粘度' },
+            'horizontal drilling': { en: 'horizontal drilling', cn: '水平钻井' },
+            'reservoirs': { en: 'reservoir', cn: '油藏' },
+            'production': { en: 'production', cn: '产量' },
+            'Hydraulic fracturing': { en: 'Hydraulic fracturing', cn: '水力压裂' },
+            'shale gas': { en: 'shale gas', cn: '页岩气' },
+            'tight oil': { en: 'tight oil', cn: '致密油' }
+        };
+        
+        // 常用单词词典
+        const dictionary = {
+            // 石油工程专业词汇
+            'reservoir': '油藏；储层',
+            'drilling': '钻井',
+            'wellbore': '井筒',
+            'casing': '套管',
+            'formation': '地层；岩层',
+            'permeability': '渗透率',
+            'porosity': '孔隙度',
+            'oil': '石油；油',
+            'gas': '天然气；气体',
+            'well': '井',
+            'field': '油田',
+            'crude': '原油',
+            'pipeline': '管道',
+            'pump': '泵',
+            'valve': '阀门',
+            'pressure': '压力',
+            'temperature': '温度',
+            'flow': '流动；流量',
+            'injection': '注入',
+            'production': '生产；产量',
+            'recovery': '采收；回收',
+            'extraction': '提取；开采',
+            'mobility': '流动性',
+            'thermal': '热力的',
+            'chemical': '化学的',
+            'mechanical': '机械的',
+            'horizontal': '水平的',
+            'vertical': '垂直的',
+            'conventional': '常规的',
+            'unconventional': '非常规的',
+            'fracture': '裂缝',
+            'rock': '岩石',
+            'sandstone': '砂岩',
+            'shale': '页岩',
+            'limestone': '石灰岩',
+            'sediment': '沉积物',
+            'underground': '地下的',
+            'surface': '表面；地面',
+            'depth': '深度',
+            'layer': '层',
+            'zone': '区域；层段',
+            'efficiency': '效率',
+            'technology': '技术',
+            'method': '方法',
+            'technique': '技术；方法',
+            'equipment': '设备',
+            'operation': '作业；操作',
+            'industry': '工业；行业',
+            'resource': '资源',
+            'reserve': '储量',
+            'decline': '下降；递减',
+            'increase': '增加',
+            'decrease': '减少',
+            'improve': '改善；提高',
+            'reduce': '减少；降低',
+            'enhance': '增强；提高',
+            'optimize': '优化',
+            'maximize': '最大化',
+            'minimize': '最小化',
+            'enable': '使能够',
+            'allow': '允许',
+            'involve': '涉及；包含',
+            'inject': '注入',
+            'create': '创建；产生',
+            'flow': '流动',
+            'access': '访问；通道',
+            'contact': '接触',
+            'significant': '重要的；显著的',
+            'effective': '有效的',
+            'important': '重要的',
+            'economic': '经济的',
+            'profitable': '有利润的',
+            'efficient': '高效的',
+            'free': '自由的；免费的',
+            'high': '高的',
+            'low': '低的',
+            'large': '大的',
+            'small': '小的',
+            'more': '更多',
+            'less': '更少',
+            'commonly': '通常地',
+            'particularly': '特别是',
+            'increasingly': '日益；越来越',
+            'previously': '先前；之前',
+            'worldwide': '全球的',
+            'instrumental': '有帮助的；起作用的',
+            // 常用动词
+            'is': '是',
+            'are': '是',
+            'was': '是（过去式）',
+            'were': '是（过去式）',
+            'be': '是',
+            'been': '是（过去分词）',
+            'being': '正在；存在',
+            'have': '有',
+            'has': '有',
+            'had': '有（过去式）',
+            'do': '做',
+            'does': '做',
+            'did': '做（过去式）',
+            'will': '将',
+            'would': '将（过去式）',
+            'can': '能',
+            'could': '能（过去式）',
+            'may': '可能',
+            'might': '可能（过去式）',
+            'shall': '将',
+            'should': '应该',
+            'must': '必须',
+            // 常用介词/连词
+            'the': '这；那',
+            'a': '一个',
+            'an': '一个',
+            'in': '在...里',
+            'on': '在...上',
+            'at': '在',
+            'to': '到；向',
+            'for': '为了；对于',
+            'with': '和；用',
+            'by': '通过；被',
+            'from': '从',
+            'of': '...的',
+            'and': '和',
+            'or': '或',
+            'but': '但是',
+            'not': '不',
+            'this': '这个',
+            'that': '那个',
+            'these': '这些',
+            'those': '那些',
+            'it': '它',
+            'its': '它的',
+            'they': '他们',
+            'them': '他们（宾格）',
+            'their': '他们的',
+            'we': '我们',
+            'us': '我们（宾格）',
+            'our': '我们的',
+            'you': '你；你们',
+            'your': '你的；你们的',
+            'he': '他',
+            'him': '他（宾格）',
+            'his': '他的',
+            'she': '她',
+            'her': '她的',
+            'which': '哪个；哪些',
+            'what': '什么',
+            'who': '谁',
+            'where': '哪里',
+            'when': '什么时候',
+            'how': '如何',
+            'why': '为什么'
+        };
+
+        // 状态
+        let stats = { translated: 0 };
+        let errorWords = [];
+        let currentPassage = null;
+        let currentErrors = [];
+        let recognition = null;
+        let isListening = false;
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            updateStats();
+            initSpeechRecognition();
+        });
+
+        // 加载数据
+        function loadData() {
+            try {
+                const saved = localStorage.getItem('petroleum-stats');
+                if (saved) stats = JSON.parse(saved);
+                
+                const savedWords = localStorage.getItem('petroleum-errors');
+                if (savedWords) errorWords = JSON.parse(savedWords);
+            } catch (e) {
+                console.error('加载数据失败:', e);
+            }
+        }
+
+        // 保存数据
+        function saveData() {
+            try {
+                localStorage.setItem('petroleum-stats', JSON.stringify(stats));
+                localStorage.setItem('petroleum-errors', JSON.stringify(errorWords));
+            } catch (e) {
+                console.error('保存数据失败:', e);
+            }
+        }
+
+        // 更新统计
+        function updateStats() {
+            document.getElementById('statTranslated').textContent = stats.translated || 0;
+            document.getElementById('statErrors').textContent = errorWords.length || 0;
+        }
+
+        // 页面导航
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function goHome() {
+            showPage('homePage');
+            updateStats();
+        }
+
+        // 开始翻译
+        function startTranslation() {
+            currentPassage = passagesData[Math.floor(Math.random() * passagesData.length)];
+            currentErrors = [];
+            
+            document.getElementById('passageText').textContent = currentPassage.content;
+            document.getElementById('difficultyBadge').textContent = 
+                currentPassage.difficulty === 'easy' ? '简单' : 
+                currentPassage.difficulty === 'medium' ? '中等' : '困难';
+            document.getElementById('difficultyBadge').className = 'difficulty-badge ' + currentPassage.difficulty;
+            
+            document.getElementById('translationInput').value = '';
+            document.getElementById('translationInputSection').style.display = 'block';
+            document.getElementById('resultSection').style.display = 'none';
+            
+            // 重置保存按钮
+            const btn = document.getElementById('saveButton');
+            btn.textContent = '📖 保存错词到错词库';
+            btn.classList.remove('saved');
+            btn.disabled = false;
+            
+            showPage('transPage');
+        }
+
+        // 语音识别
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'zh-CN';
+                
+                recognition.onresult = function(event) {
+                    let final = '';
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        if (event.results[i].isFinal) {
+                            final += event.results[i][0].transcript;
+                        }
+                    }
+                    if (final) {
+                        document.getElementById('translationInput').value += final;
+                    }
+                };
+                
+                recognition.onerror = function() {
+                    isListening = false;
+                    updateVoiceButton();
+                };
+                
+                recognition.onend = function() {
+                    isListening = false;
+                    updateVoiceButton();
+                };
+            }
+        }
+
+        function toggleVoiceInput() {
+            if (!recognition) {
+                alert('浏览器不支持语音识别，请使用 Chrome');
+                return;
+            }
+            
+            if (isListening) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+            isListening = !isListening;
+            updateVoiceButton();
+        }
+
+        function updateVoiceButton() {
+            const btn = document.getElementById('voiceBtn');
+            const indicator = document.getElementById('recordingIndicator');
+            const text = document.getElementById('voiceBtnText');
+            
+            if (isListening) {
+                btn.classList.add('recording');
+                indicator.classList.add('active');
+                text.textContent = '停止录音';
+            } else {
+                btn.classList.remove('recording');
+                indicator.classList.remove('active');
+                text.textContent = '语音输入';
+            }
+        }
+
+        // 提交翻译
+        function submitTranslation() {
+            const userTranslation = document.getElementById('translationInput').value.trim();
+            if (!userTranslation) {
+                alert('请输入翻译内容');
+                return;
+            }
+            
+            // 停止录音
+            if (isListening && recognition) {
+                recognition.stop();
+                isListening = false;
+                updateVoiceButton();
+            }
+            
+            // 检查关键词
+            currentErrors = [];
+            let matched = 0;
+            
+            currentPassage.keywords.forEach(keyword => {
+                const possible = {
+                    'Enhanced Oil Recovery': ['提高采收率', '强化采油'],
+                    'steam injection': ['蒸汽注入', '蒸汽驱'],
+                    'viscosity': ['粘度', '黏性'],
+                    'horizontal drilling': ['水平钻井', '水平井'],
+                    'reservoirs': ['油藏', '储层', '油层'],
+                    'production': ['生产', '产量'],
+                    'Hydraulic fracturing': ['水力压裂', '液压破碎', '压裂'],
+                    'shale gas': ['页岩气'],
+                    'tight oil': ['致密油', '紧密油']
+                }[keyword] || [keyword];
+                
+                if (possible.some(t => userTranslation.includes(t))) {
+                    matched++;
+                } else {
+                    const info = wordTranslations[keyword] || { en: keyword, cn: keyword };
+                    currentErrors.push(info);
+                }
+            });
+            
+            const score = Math.round((matched / currentPassage.keywords.length) * 100);
+            
+            // 显示结果
+            document.getElementById('translationInputSection').style.display = 'none';
+            document.getElementById('resultSection').style.display = 'block';
+            
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            scoreDisplay.textContent = score + '分';
+            scoreDisplay.className = 'score-display ' + (score >= 80 ? 'excellent' : score >= 60 ? 'good' : 'poor');
+            
+            // 显示错误词汇
+            const errorsSection = document.getElementById('errorsSection');
+            if (currentErrors.length > 0) {
+                errorsSection.innerHTML = '<p class="reference-title">重点词汇问题：</p>' +
+                    currentErrors.map(e => 
+                        `<div class="error-word">
+                            <div class="error-word-title">${e.en}</div>
+                            <div class="error-word-expected">应为：${e.cn}</div>
+                        </div>`
+                    ).join('');
+            } else {
+                errorsSection.innerHTML = '<div class="no-errors">🎉 完美！所有重点词汇都翻译正确！</div>';
+                document.getElementById('saveButton').style.display = 'none';
+            }
+            
+            document.getElementById('referenceText').textContent = currentPassage.translation;
+            
+            // 渲染可选词的原文
+            renderSelectablePassage(currentPassage.content);
+            
+            // 更新统计
+            stats.translated++;
+            saveData();
+        }
+
+        // 保存错词到错词库
+        function saveErrors() {
+            if (currentErrors.length === 0) return;
+            
+            let added = 0;
+            currentErrors.forEach(word => {
+                if (!errorWords.some(w => w.en === word.en)) {
+                    errorWords.push({
+                        ...word,
+                        id: Date.now() + Math.random(),
+                        timestamp: Date.now()
+                    });
+                    added++;
+                }
+            });
+            
+            saveData();
+            updateStats();
+            
+            const btn = document.getElementById('saveButton');
+            if (added > 0) {
+                btn.textContent = `✓ 已保存 ${added} 个错词`;
+            } else {
+                btn.textContent = '✓ 已存在，无需重复保存';
+            }
+            btn.classList.add('saved');
+            btn.disabled = true;
+        }
+
+        // 显示错词库
+        function showWordbook() {
+            renderWordbook();
+            showPage('wordbookPage');
+        }
+
+        function renderWordbook() {
+            const content = document.getElementById('wordbookContent');
+            
+            if (errorWords.length === 0) {
+                content.innerHTML = `
+                    <div class="wordbook-empty">
+                        <p style="font-size: 2rem; margin-bottom: 15px;">📖</p>
+                        <p style="font-size: 1.2rem; margin-bottom: 10px;">暂无错词</p>
+                        <p style="opacity: 0.8;">在翻译练习中点击"保存错词"按钮，</p>
+                        <p style="opacity: 0.8;">错词会自动添加到这里</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            errorWords.forEach(word => {
+                html += `
+                    <div class="wordbook-item">
+                        <div class="wordbook-content">
+                            <div class="wordbook-en">${word.en}</div>
+                            <div class="wordbook-cn">${word.cn}</div>
+                        </div>
+                        <button class="wordbook-delete" onclick="deleteWord('${word.id}')">删除</button>
+                    </div>
+                `;
+            });
+            
+            html += `
+                <div class="wordbook-actions">
+                    <button class="clear-button" onclick="clearAll()">清空错词库</button>
+                </div>
+            `;
+            
+            content.innerHTML = html;
+        }
+
+        function deleteWord(id) {
+            errorWords = errorWords.filter(w => String(w.id) !== String(id));
+            saveData();
+            updateStats();
+            renderWordbook();
+        }
+
+        function clearAll() {
+            if (confirm('确定要清空所有错词吗？')) {
+                errorWords = [];
+                saveData();
+                updateStats();
+                renderWordbook();
+            }
+        }
+        
+        // 选词功能
+        let currentPopupWord = null;
+        
+        function renderSelectablePassage(text) {
+            const container = document.getElementById('selectablePassage');
+            const words = text.split(/(\s+|[,.:;!?()])/);
+            
+            let html = '';
+            words.forEach(word => {
+                if (word.trim() === '' || /^[,.:;!?()]+$/.test(word)) {
+                    html += word;
+                } else {
+                    const lowerWord = word.toLowerCase().replace(/[^a-z]/g, '');
+                    const isInDictionary = dictionary[lowerWord] || dictionary[word.toLowerCase()];
+                    html += `<span class="word" onclick="showWordPopup('${word.replace(/'/g, "\\'")}')" data-word="${word}">${word}</span>`;
+                }
+            });
+            
+            container.innerHTML = html;
+            updateSelectableWords();
+        }
+        
+        function updateSelectableWords() {
+            document.querySelectorAll('#selectablePassage .word').forEach(el => {
+                const word = el.getAttribute('data-word');
+                const isSaved = errorWords.some(w => w.en.toLowerCase() === word.toLowerCase());
+                if (isSaved) {
+                    el.classList.add('saved');
+                }
+            });
+        }
+        
+        function showWordPopup(word) {
+            currentPopupWord = word;
+            const cleanWord = word.replace(/[^a-zA-Z\s-]/g, '').trim();
+            const lowerWord = cleanWord.toLowerCase();
+            
+            // 查找释义
+            let meaning = dictionary[lowerWord] || dictionary[cleanWord];
+            
+            // 如果没找到，尝试查找短语
+            if (!meaning) {
+                for (const key of Object.keys(dictionary)) {
+                    if (key.toLowerCase().includes(lowerWord) || lowerWord.includes(key.toLowerCase())) {
+                        meaning = dictionary[key];
+                        break;
+                    }
+                }
+            }
+            
+            if (!meaning) {
+                meaning = '（未找到释义，可手动添加）';
+            }
+            
+            document.getElementById('popupEn').textContent = cleanWord;
+            document.getElementById('popupCn').textContent = meaning;
+            
+            // 检查是否已存在
+            const exists = errorWords.some(w => w.en.toLowerCase() === cleanWord.toLowerCase());
+            const btn = document.getElementById('popupAddBtn');
+            if (exists) {
+                btn.textContent = '✓ 已在错词库中';
+                btn.disabled = true;
+            } else {
+                btn.textContent = '添加到错词库';
+                btn.disabled = false;
+            }
+            
+            document.getElementById('wordPopupOverlay').style.display = 'block';
+            document.getElementById('wordPopup').style.display = 'block';
+        }
+        
+        function closeWordPopup() {
+            document.getElementById('wordPopupOverlay').style.display = 'none';
+            document.getElementById('wordPopup').style.display = 'none';
+            currentPopupWord = null;
+        }
+        
+        function addWordFromPopup() {
+            if (!currentPopupWord) return;
+            
+            const cleanWord = currentPopupWord.replace(/[^a-zA-Z\s-]/g, '').trim();
+            const meaning = document.getElementById('popupCn').textContent;
+            
+            // 检查是否已存在
+            if (errorWords.some(w => w.en.toLowerCase() === cleanWord.toLowerCase())) {
+                closeWordPopup();
+                return;
+            }
+            
+            errorWords.push({
+                id: Date.now() + Math.random(),
+                en: cleanWord,
+                cn: meaning,
+                timestamp: Date.now()
+            });
+            
+            saveData();
+            updateStats();
+            updateSelectableWords();
+            
+            // 更新按钮状态
+            const btn = document.getElementById('popupAddBtn');
+            btn.textContent = '✓ 已添加';
+            btn.disabled = true;
+            
+            // 高亮显示已保存的单词
+            document.querySelectorAll('#selectablePassage .word').forEach(el => {
+                if (el.getAttribute('data-word').toLowerCase() === cleanWord.toLowerCase()) {
+                    el.classList.add('saved');
+                }
+            });
+            
+            setTimeout(closeWordPopup, 500);
+        }
+    </script>
+</body>
+</html>
